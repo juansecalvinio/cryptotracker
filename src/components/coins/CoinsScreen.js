@@ -1,16 +1,24 @@
 import React from 'react'
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import Http from '../../libs/http';
+import CoinsItem from './CoinsItem';
+import { colors } from './../../res/colors';
 
 const CoinsScreen = (props) => {
 
+    const [loading, setLoading] = React.useState(false);
+    const [coins, setCoins] = React.useState('');
+
     React.useEffect(() => {
+        setLoading(true);
         getCoins();
     }, []);
 
     const getCoins = async () => {
-        const coins = await Http.instance.get('https://api.coinlore.net/api/tickers/');
-        console.log('coins', coins);
+        const response = await Http.instance.get('https://api.coinlore.net/api/tickers/');
+        console.log('coins', response);
+        setCoins(response.data);
+        setLoading(false);
     }
 
     const handlePress = () => {
@@ -19,33 +27,36 @@ const CoinsScreen = (props) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Coins Screen</Text>
-            <Pressable style={styles.btn} onPress={handlePress}>
-                <Text style={styles.btnText}>Go to detail</Text>
-            </Pressable>
+            
+            { loading 
+            ?
+            <ActivityIndicator 
+                style={styles.loader} 
+                color='#222222' 
+                size='large' 
+            /> 
+            : 
+            <FlatList
+                data={coins}
+                renderItem={({ item }) => 
+                    <CoinsItem item={item} />    
+                }
+            />
+            }
+            
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#FDFEFE',
-        alignItems: 'center',
+        flex: 1,
+        backgroundColor: colors.charade,
+        padding: 10,
     },
-    title: {
-        textAlign: 'center',
-        fontWeight: '600',
+    loader: {
+        marginTop: 60,
     },
-    btn: {
-        padding: 8,
-        backgroundColor: '#5DADE2',
-        borderRadius: 8,
-        margin: 16,
-    },
-    btnText: {
-        color: '#FDFEFE',
-        textAlign: 'center',
-    }
 })
 
 export default CoinsScreen;

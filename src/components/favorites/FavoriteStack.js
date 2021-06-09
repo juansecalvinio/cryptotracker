@@ -1,12 +1,11 @@
-import React from 'react';
+import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
-import CoinsScreen from './CoinsScreen';
-import CoinDetailScreen from './../coinsDetail/CoinDetailScreen';
+import FavoriteScreen from './FavoritesScreen';
 import { colors } from './../../res/colors';
 
 const Stack = createStackNavigator();
 
-const CoinsStack = () => {
+const FavoriteStack = () => {
     return (
         <Stack.Navigator
             screenOptions={{ 
@@ -18,10 +17,12 @@ const CoinsStack = () => {
                 headerTintColor: colors.white
             }}
         >
-            <Stack.Screen name="Coins" component={CoinsScreen} />
-            <Stack.Screen name="CoinDetail" component={CoinDetailScreen} />
+            <Stack.Screen 
+                name="Favorites" 
+                component={FavoriteScreen}
+            />
         </Stack.Navigator>
-    );
+    )
 }
 
-export default CoinsStack;
+export default FavoriteStack;

@@ -1,18 +1,18 @@
 class Http {
     static instance = new Http();
 
-    get = async (url) => {
+    async get(url) {
         try {
             let request = await fetch(url);
             let json = await request.json();
             return json;
         } catch (error) {
-            console.log('HTTP GET method error', error);
+            console.log('Http get method error', error);
             throw Error(error);
         }
     }
 
-    post = async (url, body) => {
+    async post(url, body) {
         try {
             let request = await fetch(url, {
                 method: "POST",
@@ -21,7 +21,7 @@ class Http {
             let json = await request.json();
             return json;
         } catch (error) {
-            console.log('HTTP POST method error', error);
+            console.log('Http post method error', error);
             throw Error(error);
         }
     }
